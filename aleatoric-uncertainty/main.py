@@ -10,28 +10,26 @@ flags.DEFINE_string('checkpoint', 'None', "Model checkpoint to be tested")
 FLAGS = flags.FLAGS
 
 def main(_):
-    
-    with tf.device(FLAGS.device):
-	
-	model_save_path = 'model/'+FLAGS.model_save_path	
-	# create directory if it does not exist
-	if not tf.gfile.Exists(model_save_path):
-		tf.gfile.MakeDirs(model_save_path)
-	log_dir = 'logs/'+ model_save_path
-	
-	model = Model(learning_rate=0.0003, mode=FLAGS.mode)
-	solver = Solver(model, model_save_path=model_save_path, log_dir=log_dir)
-	
-	# create directory if it does not exist
-	if not tf.gfile.Exists(model_save_path):
-		tf.gfile.MakeDirs(model_save_path)
-	
-	if FLAGS.mode == 'train':
-		solver.train()
-	elif FLAGS.mode == 'test':
-		solver.test(checkpoint=FLAGS.checkpoint)
-	else:
-	    print 'Unrecognized mode.'
+	with tf.device(FLAGS.device):
+		model_save_path = 'model/'+FLAGS.model_save_path	
+		# create directory if it does not exist
+		if not tf.gfile.Exists(model_save_path):
+			tf.gfile.MakeDirs(model_save_path)
+		log_dir = 'logs/'+ model_save_path
+		
+		model = Model(learning_rate=0.0003, mode=FLAGS.mode)
+		solver = Solver(model, model_save_path=model_save_path, log_dir=log_dir)
+		
+		# create directory if it does not exist
+		if not tf.gfile.Exists(model_save_path):
+			tf.gfile.MakeDirs(model_save_path)
+		
+		if FLAGS.mode == 'train':
+			solver.train()
+		elif FLAGS.mode == 'test':
+			solver.test(checkpoint=FLAGS.checkpoint)
+		else:
+			print('Unrecognized mode.')
         
 if __name__ == '__main__':
     tf.app.run()
